@@ -22,37 +22,36 @@ import one.digitalinnovation.gof.service.ClienteService;
  * @author falvojr
  */
 @RestController
-@RequestMapping("clientes")
-public class ClienteRestController {
+@RequestMapping("clients")
+public class ClientRestController {
+    @Autowired
+    private ClientService clientService;
 
-	@Autowired
-	private ClienteService clienteService;
+    @GetMapping
+    public ResponseEntity<Iterable<Client>> findAll() {
+        return ResponseEntity.ok(clientService.findAll());
+    }
 
-	@GetMapping
-	public ResponseEntity<Iterable<Cliente>> buscarTodos() {
-		return ResponseEntity.ok(clienteService.buscarTodos());
-	}
+    @GetMapping("/{id}")
+    public ResponseEntity<Client> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(clientService.findById(id));
+    }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
-		return ResponseEntity.ok(clienteService.buscarPorId(id));
-	}
+    @PostMapping
+    public ResponseEntity<Client> insert(@RequestBody Client client) {
+        clientService.insert(client);
+        return ResponseEntity.ok(client);
+    }
 
-	@PostMapping
-	public ResponseEntity<Cliente> inserir(@RequestBody Cliente cliente) {
-		clienteService.inserir(cliente);
-		return ResponseEntity.ok(cliente);
-	}
+    @PutMapping("/{id}")
+    public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client client) {
+        clientService.update(id, client);
+        return ResponseEntity.ok(client);
+    }
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
-		clienteService.atualizar(id, cliente);
-		return ResponseEntity.ok(cliente);
-	}
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletar(@PathVariable Long id) {
-		clienteService.deletar(id);
-		return ResponseEntity.ok().build();
-	}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        clientService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }
